@@ -1,0 +1,19 @@
+{
+    "authors": [
+        {
+            "name": "Andressa Guimarães",
+            "email": "desa.lopes7@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : "^5.6 || ^7.0",
+        "twig/twig": "*",
+        "symfony/yaml" : "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Stars\\": "src/"
+        }
+    }
+}

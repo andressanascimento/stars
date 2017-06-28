@@ -1,0 +1,4 @@
+default:
+  dsn: mysql:host=localhost;dbname=stars
+  username: root
+  password: null
