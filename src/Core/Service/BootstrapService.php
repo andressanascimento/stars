@@ -27,10 +27,12 @@ class BootstrapService
      */
     public function handle($project_namespace) 
     {
-        $get = $this->request->get();
-        $module = $get['module'];
-        $controller = $this->dashesToCamelCase($get['controller']);
-        $action = $this->dashesToCamelCase($get['action']).'Action';
+        $uri = urldecode($this->request->server['REQUEST_URI']);
+        $url = explode ("/", $uri);
+
+        $module = $url[1];
+        $controller = $this->dashesToCamelCase($url[2]);
+        $action = $this->dashesToCamelCase($url[3]).'Action';
 
         $class_name = $project_namespace."\\".$module."\\Controller\\".$controller.'Controller';
         try {
