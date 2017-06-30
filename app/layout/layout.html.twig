@@ -1,0 +1,51 @@
+    <!doctype html>
+    <html>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>{% block title %}Stars{% endblock %}</title>
+            {% block stylesheets %}
+                <link rel="stylesheet" href="/assets/vendor/bootstrap/dist/css/bootstrap.min.css">
+                <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+            {% endblock stylesheets %}
+        </head>
+        <body>
+            <div class="container-fluid">
+                {% block navbar %}
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="navbar navbar-default navbar-fixed-top">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="#">Stars</a>
+                            </div>
+                            <div class="navbar-collapse collapse navbar-inverse-collapse">
+                                <ul class="nav navbar-nav">
+                                    <li><a href="#">Clientes</a></li>
+                                    <li><a href="#">Transações</a></li>
+                                    <li><a href="#">Avaliação</a></li>
+                                    <li><a href="#">Vendedor</a></li>
+                                    <li><a href="#">Loja</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endblock navbar %}
+                {% block body %}
+                    <div class="row" style="margin-top: 50px">
+                        <div class="col-xs-12">
+                            {% block content %}
+                            {% endblock content %}
+                        </div>
+                    </div>
+            {% endblock body %}
+        </body>
+        {% block javascripts %}
+            <script src="/assets/vendor/jquery/dist/jquery.min.js"></script>
+        {% endblock %}
+    </html>
+

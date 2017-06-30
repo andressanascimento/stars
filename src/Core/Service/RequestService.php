@@ -12,19 +12,22 @@ class RequestService
 
     private $files;
 
-    protected function __construct($get, $post, $cookie, $files, $server) {
+    private $routes;
+
+    protected function __construct($get, $post, $cookie, $files, $server, $routes) {
         $this->get = $get;
         $this->post = $post;
         $this->cookie = $cookie;
         $this->files = $files;
         $this->server = $server;
+        $this->routes = $routes;
     }
 
     /**
      * @return Stars\Core\RequestService
      * 
      */
-    public static function initialize()
+    public static function initialize($routes)
     {
         //handle php built in
         $server = $_SERVER;
@@ -36,7 +39,7 @@ class RequestService
                 $server['CONTENT_TYPE'] = $_SERVER['HTTP_CONTENT_TYPE'];
             }
         }
-        return new static($_GET, $_POST, $_COOKIE, $_FILES, $server);
+        return new static($_GET, $_POST, $_COOKIE, $_FILES, $server, $routes);
     }
 
     public function get() {
@@ -53,6 +56,30 @@ class RequestService
 
     public function server() {
         return $this->server;
+    }
+
+    public function getRoute ($route_url)
+    {
+        foreach ($this->routes as $route) {
+            if (preg_match($route['url'], $route_url, $matches)) {
+                $final_route = array(
+                    'module' => $matches[substr($route['module'],1,1)],
+                    'controller' => $matches[substr($route['controller'],1,1)],
+                    'action' => $matches[substr($route['action'],1,1)],
+                );
+
+                if (array_key_exists('params', $route)) {
+                    foreach ($route['params'] as $param => $value) {
+                        $this->get[$param] = $matches[substr($value,1,1)];
+                    }
+                }
+                
+                return $final_route;
+            }
+
+        }
+        
+        return false;
     }
 
 }

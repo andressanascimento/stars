@@ -8,6 +8,9 @@ use Stars\Core\Service\DatabaseService;
 
 class BootstrapService
 {
+
+    private $projectNamespace;
+
     /**
      * @param RequestService $request
      * @param ViewModelService $viewModel
@@ -27,14 +30,15 @@ class BootstrapService
      */
     public function handle($project_namespace) 
     {
-        $uri = urldecode($this->request->server['REQUEST_URI']);
-        $url = explode ("/", $uri);
+        $this->projectNamespace = $project_namespace;
+        $route = $this->request->getRoute($this->request->server['REQUEST_URI']);
+        if (!$route) {
+            return "404 página não encontrada";
+        }
+        
+        $class_name = $this->getControllerName($route);
 
-        $module = $url[1];
-        $controller = $this->dashesToCamelCase($url[2]);
-        $action = $this->dashesToCamelCase($url[3]).'Action';
-
-        $class_name = $project_namespace."\\".$module."\\Controller\\".$controller.'Controller';
+        $action = $route['action'].'Action';
         try {
             $controller = new $class_name($this->request, $this->viewModel->getViewModel(), $this->db);
             $response = $controller->{$action}();
@@ -43,6 +47,19 @@ class BootstrapService
         }
 
         return $response;
+    }
+
+    private function getControllerName($route)
+    {
+        $module = $route['module'];
+        $controller = $this->dashesToCamelCase($route['controller']);
+        $action = $this->dashesToCamelCase($route['action']).'Action';
+
+        $class_name = $this->projectNamespace."\\".$module."\\Controller\\".$controller.'Controller';
+        if (!class_exists($class_name)) {
+            throw new \Exception("Controller ".$class_name." not found");
+        }
+        return $class_name;
     }
 
     /**

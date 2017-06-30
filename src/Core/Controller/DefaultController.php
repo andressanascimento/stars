@@ -33,4 +33,9 @@ class DefaultController
         $this->view = $view;
         $this->db = $db;
     }
+
+    public function __call($name, $arguments)
+    {
+        return "404 page not found";
+    }
 }

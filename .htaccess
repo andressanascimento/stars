@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>]
+
+	RewriteEngine On
+
+	RewriteRule ^([a-z]+)/([a-z]+)/([a-z]+)/?$ /index.php?modulo=$1&controller=$2&action=$3 [NC,L]
+
+	RewriteRule ^([a-z]+)/([a-z]+)/([a-z]+)/([0-9]+)/?$ /index.php?modulo=$1&controller=$2&action=$3 [NC,L]
+
+</IfModule>
