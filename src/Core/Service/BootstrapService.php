@@ -4,6 +4,7 @@ namespace Stars\Core\Service;
 
 use Stars\Core\Service\RequestService;
 use Stars\Core\Service\ViewModelService;
+use Stars\Core\Service\DatabaseService;
 
 class BootstrapService
 {
@@ -12,10 +13,11 @@ class BootstrapService
      * @param ViewModelService $viewModel
      * 
      */
-    public function __construct(RequestService $request, ViewModelService $viewModel)
+    public function __construct(RequestService $request, ViewModelService $viewModel, DatabaseService $db)
     {
         $this->request = $request;
         $this->viewModel = $viewModel;
+        $this->db = $db;
     }
 
     /**
@@ -32,7 +34,7 @@ class BootstrapService
 
         $class_name = $project_namespace."\\".$module."\\Controller\\".$controller.'Controller';
         try {
-            $controller = new $class_name($this->request, $this->viewModel->getViewModel());
+            $controller = new $class_name($this->request, $this->viewModel->getViewModel(), $this->db);
             $response = $controller->{$action}();
         } catch (\Exception $e) {
             return $e->getMessage();
