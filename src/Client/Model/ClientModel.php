@@ -2,19 +2,19 @@
 
 namespace Stars\Client\Model;
 
-class ClientModel
-{
-    private $tableName = 'client';
+use Stars\Core\Model\Model;
 
-    private $repositoryName = 'Stars\\Client\\Repository\\ClientRepository';
+class ClientModel extends Model
+{
+    protected $tableName = 'client';
+
+    protected $repositoryName = 'Stars\\Client\\Repository\\ClientRepository';
 
     private $id;
 
     private $name;
 
     private $age;
-
-    private $relationships = array();
 
 
     public function getId() {
@@ -29,20 +29,5 @@ class ClientModel
     public function getAge()
     {
         return $this->age;
-    }
-
-    public function getRelationships()
-    {
-        return $this->relationships;
-    }
-
-    public function getRepositoryName() 
-    {
-        return $this->repositoryName;
-    }
-
-    public function getTableName()
-    {
-        return $this->tableName;
     }
 }

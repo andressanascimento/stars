@@ -47,6 +47,26 @@ class Repository
         return $statement->fetchAll(\PDO::FETCH_CLASS, $this->modelName);
     }
 
+    public function findByOne(array $parameters)
+    {
+        $table = $this->tableName;
+        //where clause
+        $where_sql = $parameters;
+        array_walk($where_sql, function (&$v, $k) { $v = $k." = :".$k; });
+        $where_clause = implode(" and ", $where_sql);
+
+        $sql = "select * from {$table} where {$where_clause}";
+
+        $statement = $this->connection->prepare($sql);
+        foreach ($parameters as $param => &$value) {
+            $statement->bindParam($param, $value);
+        }
+        $statement->setFetchMode(\PDO::FETCH_CLASS, $this->modelName); 
+        $statement->execute();
+        
+        return $statement->fetch();
+    }
+
     public function searchByName($name)
     {
         $table = $this->getTableName();

@@ -11,15 +11,6 @@ class ClientFormValidator extends FormValidator
     public function __construct() {
         $this->rules = array (
             'name' => array(
-                'validators' => array(
-                    'is_string' => function ($value, &$message) {
-                        if (!ctype_alpha(trim($value))) {
-                            $message = "Nome deve conter apenas letras";
-                            return false;
-                        }
-                        return true;
-                    }
-                ),
                 'required' => true
             ),
             'age' => array (
