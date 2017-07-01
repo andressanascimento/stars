@@ -1,0 +1,20 @@
+<table class="table table-hover table-condensed" style="margin-top:5px">
+    <thead>
+        <tr>
+            <th style="width: 30px"></th>
+            <th>Nome</th>
+            <th class="col-md-2">Idade</th>
+            <th class="col-md-1">Editar</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for client in clients %}
+        <tr>
+            <td><input type="checkbox" value={{client.id}} class="checkbox-delete"></td>
+            <td>{{client.name}}</td>
+            <td>{{client.age}}</td>
+            <td><button class="btn btn-primary edit" model-id={{client.id}}>Editar</button></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

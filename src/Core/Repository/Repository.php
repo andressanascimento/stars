@@ -4,7 +4,7 @@ namespace Stars\Core\Repository;
 
 
 
-class DefaultRepository
+class Repository
 {
     protected $connection;
 
@@ -44,6 +44,16 @@ class DefaultRepository
 
         $statement->execute();
         
+        return $statement->fetchAll(\PDO::FETCH_CLASS, $this->modelName);
+    }
+
+    public function searchByName($name)
+    {
+        $table = $this->getTableName();
+        $statement = $this->connection->prepare("select * from {$table} where name like :name");
+        $like = '%'.$name.'%';
+        $statement->bindParam(':name', $like);
+        $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_CLASS, $this->modelName);
     }
 

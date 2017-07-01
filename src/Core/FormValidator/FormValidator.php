@@ -1,62 +1,84 @@
 <?php
 
-namespace Stars\Core\ValidateForm;
+namespace Stars\Core\FormValidator;
 
-class ValidateForm
+class FormValidator
 {
-	protected $rules;
+    protected $rules;
 
-	protected $messages;
+    protected $messages;
 
-	public function valid(array $form_values)
-	{
-		$this->messages = null;
-		$messages = array();
-		$invalid = 0;
-		$rules = $this->rules;
-		if ($this->validateRules($this->rules)) {
-			foreach ($form_values as $input => $input_value) {
-				if (array_key_exists($input, $rules)) {
-					foreach ($rules[$input]['validators'] as $validator) {
-						$messages = null;
-						if ($validator instanceof \Closure) {
-							if (!$validator($value,&$message)) {
-								$messages[$input] = $message;
-								$invalid++;
-							}
-						}
-					}
-				}
-			}
-		}
+    public function isValid(array $form_values)
+    {
+        $this->messages = null;
+        $invalid = true;
+        $rules = $this->rules;
+        if ($this->validateRules($this->rules)) {
+            foreach ($form_values as $input => $input_value) {
+                if (array_key_exists($input, $rules)) {
+                    if (array_key_exists('validators', $rules[$input])) {
+                        foreach ($rules[$input]['validators'] as $validator) {
+                            $messages = null;
+                            if ($validator instanceof \Closure) {
+                                if (!$validator($input_value, $message)) {
+                                    $this->messages[$input][] = $message;
+                                    $invalid = false;
+                                }
+                            }
 
-		return $invalid > 0 ? false : true;
-	}
+                            if ($validator instanceof Stars\Core\Validator\Validator) {
+                                if (!$validator->isValid($input_value)) {
+                                    $this->messages[$input][] = $validator->getMessages();
+                                    $invalid = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-	protected function validateRules()
-	{
-		$rules = $this->rules;
-		if (is_null($rules)) {
-			throw new \Exception("Rules not defined");
-		}
+            if(!$this->checkRequired($form_values)) {
+                $invalid = false;
+            }
+        }
 
-		foreach ($rules as $field => $definition) {
-			if (!array_key_exists('validators', $definition)) {
-				throw new \Exception("Validators not defined for field ".$field);
-			}
+        return $invalid;
+    }
 
-			foreach ($definition['validators'] as $validator) {
-				if (!($validator instanceof \Closure) || !($validator instanceof Stars\Core\Validator\Validator)) {
-					throw new \Exception("Your validator should be a closure or a implementation of Stars\/Core\/Validator\/Validator".$field);
-				}
-			}
-		}
+    protected function checkRequired(array $form_values)
+    {
+        $invalid = true;
+        foreach ($this->rules as $input_name => $rule) {
+            if (array_key_exists('required', $rule) && empty($form_values[$input_name])) {
+                $this->messages[$input_name][] = "É necessário preencher este campo";
+                $invalid = false;
+            }
+        }
+        return $invalid;
+    }
 
-		return true;
-	}
+    protected function validateRules()
+    {
+        $rules = $this->rules;
+        if (is_null($rules)) {
+            throw new \Exception("Rules not defined");
+        }
 
-	public function getMessages()
-	{
-		return $this->getMessages;
-	}
+        foreach ($rules as $field => $definition) {
+            if (array_key_exists('validators', $definition)) {
+                foreach ($definition['validators'] as $validator) {
+                    if (!($validator instanceof \Closure || $validator instanceof Stars\Core\Validator\Validator)) {
+                        throw new \Exception("Your validator should be a closure or a implementation of Stars\/Core\/Validator\/Validator");
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public function getMessages()
+    {
+        return $this->messages;
+    }
 }

@@ -5,7 +5,7 @@ namespace Stars\Core\Controller;
 use Stars\Core\Service\RequestService;
 use Stars\Core\Service\DatabaseService;
 
-class DefaultController 
+class Controller 
 {
     /**
      *  @var RequestService 

@@ -42,23 +42,36 @@ class RequestService
         return new static($_GET, $_POST, $_COOKIE, $_FILES, $server, $routes);
     }
 
-    public function get() {
+    public function get()
+    {
         return $this->get;
     }
 
-    public function post() {
+    public function post()
+    {
         return $this->post;
     }
 
-    public function cookie() {
+    public function cookie()
+    {
         return $this->cookie;
     }
 
-    public function server() {
+    public function server()
+    {
         return $this->server;
     }
 
-    public function getRoute ($route_url)
+    public function param($param_name, $type)
+    {
+        $list = $this->$type;
+        if(array_key_exists($param_name, $list)) {
+            return $list[$param_name];
+        }
+        return null;
+    }
+
+    public function getRoute($route_url)
     {
         foreach ($this->routes as $route) {
             if (preg_match($route['url'], $route_url, $matches)) {
@@ -79,6 +92,15 @@ class RequestService
 
         }
         
+        return false;
+    }
+
+    public function isPost()
+    {
+        $request = $this->server();
+        if ($request["REQUEST_METHOD"] == 'POST') {
+            return true;
+        }
         return false;
     }
 
