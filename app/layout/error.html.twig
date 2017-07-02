@@ -1,0 +1,3 @@
+{% if message is not null %}
+    <div class="alert {{message['status']}}" role="alert">{{message['message']}}</div>
+{% endif %}

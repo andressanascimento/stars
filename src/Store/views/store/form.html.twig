@@ -22,15 +22,15 @@
             {% endfor %}
         {% endif %}
     </div>
-    <div class="form-group {% if input_errors['state'] is not null %} has-error {% endif %}">
+    <div class="form-group {% if input_errors['state_id'] is not null %} has-error {% endif %}">
         <label for="state">Estado</label>
         <select name="state_id" class="form-control">
-            <option>Selecione</option>
+            <option value="">Selecione</option>
             {% for state in states %}
                 <option value="{{state.id}}" {% if model.stateId == state.id %}selected{% endif %}>{{state.name}}</option>
             {% endfor %}
         </select>
-        {% if input_errors['state'] is not null %}
+        {% if input_errors['state_id'] is not null %}
             {% for error in input_errors['state'] %}
                 <span class="help-block">{{error}}</span>
             {% endfor %}

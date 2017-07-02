@@ -50,9 +50,11 @@ class FormValidator
     {
         $invalid = true;
         foreach ($this->rules as $input_name => $rule) {
-            if (array_key_exists('required', $rule) && empty($form_values[$input_name])) {
-                $this->messages[$input_name][] = "É necessário preencher este campo";
-                $invalid = false;
+            if (array_key_exists('required', $rule)) {
+                if ($rule['required'] && empty($form_values[$input_name])) {
+                    $this->messages[$input_name][] = "É necessário preencher este campo";
+                    $invalid = false;
+                }
             }
         }
         return $invalid;

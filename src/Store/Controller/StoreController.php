@@ -123,8 +123,12 @@ class StoreController extends Controller
         if ($this->request->isPost()) {
             $ids = $this->request->param('ids','post');
             try {
-                $repository->deleteList($ids);
-                $message = array('status' => 'alert-success', 'message' => 'Registros apagados');
+                $result = $repository->deleteList($ids);
+                if (empty($result)) {
+                    $message = array('status' => 'alert-success', 'message' => 'Registros apagados');
+                } else {
+                    $message = array('status' => 'alert-info', 'message' => $result);
+                }
             } catch (\Exception $e) {
                 $message = array('status' => 'alert-danger', 'message' => 'Não foi possível deletar os registros');
             }

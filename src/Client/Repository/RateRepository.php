@@ -22,4 +22,17 @@ class RateRepository extends Repository
         return $statement->fetchAll(\PDO::FETCH_CLASS, $this->modelName);
     }
 
+    public function checkIfTransactionHasRate($transaction_id)
+    {
+        $statement = $this->connection->prepare("select * from rate r where r.transaction_id = :id");
+        $statement->bindParam(':id', $transaction_id);
+        $statement->execute();
+        $list = $statement->fetchAll(\PDO::FETCH_CLASS, $this->modelName);
+
+        if (!empty($list)) {
+            return true;
+        }
+
+        return false;
+    }
 }

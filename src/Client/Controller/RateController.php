@@ -17,17 +17,26 @@ class RateController extends Controller
         $message = null;
         $transaction_id = $this->request->param('id','get');
         $repository = $this->db->getRepository('Stars\\Client\\Model\\RateModel');
+        $action = '/client/rate/new';
+
+        if ($repository->checkIfTransactionHasRate($transaction_id)) {
+            $message = array('status' => 'alert-danger', 
+                'message' => 'Essa transação já possui uma avaliação, você não pode inserir uma nova'
+            );
+            return $this->view->render('error.html.twig', array('message' => $message));
+        }
 
         if ($this->request->isPost()) {
             $post = $this->request->post();
-            var_dump($post);
             $validator = new RateFormValidator();
             if ($validator->isValid($post)) {
                 try {
-                    $repository->insert($post);
+                    $id = $repository->insert($post);
+                    
                     $message = array('status' => 'alert-success', 'message' => 'Avaliação foi inserida foi inserida com sucesso');
+                    $action = '/client/rate/update';
+                    $model = (object) ($post + array('id' => $id));
                 } catch (\Exception $e) {
-                        var_dump($e->getMessages());
                     $message = array('status' => 'alert-danger', 'message' => 'Não foi possível inserir');
                 }
             } else {
@@ -41,7 +50,7 @@ class RateController extends Controller
             array('message' => $message,
                 'input_errors' => $input_errors, 
                 'model' => $model, 
-                'action' => '/client/rate/new',
+                'action' => $action,
                 'transaction_id' => $transaction_id
             )
         );

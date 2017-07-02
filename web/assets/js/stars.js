@@ -69,7 +69,8 @@ $(".btn-delete").click(function() {
        }
     });
     var data = {'ids':selected};
-
+    console.log(data);
+    console.log(selected);
     $.post(url, data, function(data, status){
         if (status == 'success') {
             $(grid).html(data);

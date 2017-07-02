@@ -95,7 +95,7 @@ class Repository
             return $e->getMessage();
         }
         
-        return true;
+        return $this->connection->lastInsertId();;
     }
 
     public function update(array $parameters, array $where = null)
@@ -162,29 +162,22 @@ class Repository
         return true;
     }
 
-    public function deleteList(array $list)
+    public function deleteList(array $ids)
     {
         $table = $this->tableName;
-        $where_list =  array();
-        for ($i = 0; $i < count($list); $i++) {
-            $where_sql[] = "?";
-        }
-        $where_sql = implode(" , ",$where_sql);
 
-        $sql = "delete from {$table} where id in ({$where_sql})";
-        $statement = $this->connection->prepare($sql);
+        $place = str_repeat ('?, ',  count ($ids) - 1) . '?';
+        $statement = $this->connection->prepare("delete from {$table} where id in ({$place})");
 
         $i = 1;
-        foreach($list as &$value) {
+        foreach ($ids as &$value) {
             $statement->bindParam($i, $value);
             $i++;
         }
-
+        
         try {
             $statement->execute();
         } catch (\Exception $e) {
-
-            var_dump($e->getMessage());
             return $e->getMessage();
         }
 
