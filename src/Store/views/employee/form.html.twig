@@ -1,0 +1,33 @@
+{% if message is not null %}
+    <div class="alert {{message['status']}}" role="alert">{{message['message']}}</div>
+{% endif %}
+<form method="post" name="form" id="modal-form" action="{{action}}">
+    <div class="form-group {% if input_errors['name'] is not null %} has-error {% endif %}">
+        <label for="name">Nome</label>
+        <input type="text" name="name" class="form-control" placeholder="Nome" 
+        value="{% if model is not null %}{{model.name}}{% endif %}">
+        {% if input_errors['name'] is not null %}
+            {% for error in input_errors['name'] %}
+                <span class="help-block">{{error}}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="form-group {% if input_errors['store'] is not null %} has-error {% endif %}">
+        <label for="store">Loja</label>
+        <select name="store_id" class="form-control">
+            <option>Selecione</option>
+            {% for store in stores %}
+                <option value="{{store.id}}" {% if model.storeId == store.id %}selected{% endif %}>{{store.name}}</option>
+            {% endfor %}
+        </select>
+        {% if input_errors['store'] is not null %}
+            {% for error in input_errors['store'] %}
+                <span class="help-block">{{error}}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+    {% if model is not null %}
+        <input type="hidden" name="id" value={{model.id}} />
+    {% endif %}
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>

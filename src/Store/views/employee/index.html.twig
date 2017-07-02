@@ -1,0 +1,52 @@
+{% extends 'layout.html.twig' %}
+{% block content %}
+    <div class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li class="active">Funcionário</li>
+        </ol>
+        <button class="btn btn-danger btn-delete pull-right" url="/store/employee/delete" list-grid="#grid" style="margin-left: 10px;">Deletar</button>
+        <button class="btn btn-primary btn-modal pull-right" modal-title="Novo Funcionário" modal-url="/store/employee/new">Novo</button>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-primary"> 
+            <div class="panel-heading"> 
+                <h3 class="panel-title">Pesquisar</h3> 
+            </div> 
+            <div class="panel-body">
+                <form method="post" name="search" id="search-form" list-grid="#grid" action="/store/employee/search">
+                    <div class="form-group">
+                        <input type="text" name="name" class="form-control" id="name" placeholder="Nome">
+                    </div>
+                    <button type="submit" class="btn btn-primary search-btn">Enviar</button>
+                </form> 
+            </div> 
+        </div>
+
+
+    </div>
+    <div class="col-md-9" id="grid" url="/store/employee/list">
+        <table class="table table-hover table-condensed" style="margin-top:5px">
+            <thead>
+                <tr>
+                    <th style="width: 30px"></th>
+                    <th>Nome</th>
+                    <th class="col-md-2">Loja</th>
+                    <th class="col-md-1">Editar</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for employee in employees %}
+                <tr>
+                    <td><input type="checkbox" value={{employee.id}} class="checkbox-delete"></td>
+                    <td>{{employee.name}}</td>
+                    <td>{{employee.store}}</td>
+                    <td><button class="btn btn-primary btn-modal" modal-title="Atualizar Funcionário"
+                        modal-url="/store/employee/update/{{employee.id}}">Editar</button></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock content %}

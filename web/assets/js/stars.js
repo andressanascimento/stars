@@ -17,7 +17,6 @@ $( "form#search-form" ).submit(function(event) {
 
 //open modal
 $(document).on('click','.btn-modal',function(){
-    console.log('oi');
     var url = $(this).attr('modal-url');
 
     $(".modal-title").html($(this).attr('modal-title'));

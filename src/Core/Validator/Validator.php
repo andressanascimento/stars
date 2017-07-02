@@ -4,7 +4,7 @@ namespace Stars\Core\Validator;
 
 interface Validator
 {
-	public function isValid();
+    public function isValid($value);
 
-	public function getMessage();
+    public function getMessage();
 }

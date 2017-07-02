@@ -26,9 +26,10 @@ class FormValidator
                                 }
                             }
 
-                            if ($validator instanceof Stars\Core\Validator\Validator) {
+                            $implementation = class_implements($validator);
+                            if (in_array("Stars\\Core\\Validator\\Validator",$implementation)) {
                                 if (!$validator->isValid($input_value)) {
-                                    $this->messages[$input][] = $validator->getMessages();
+                                    $this->messages[$input][] = $validator->getMessage();
                                     $invalid = false;
                                 }
                             }
@@ -67,8 +68,9 @@ class FormValidator
         foreach ($rules as $field => $definition) {
             if (array_key_exists('validators', $definition)) {
                 foreach ($definition['validators'] as $validator) {
-                    if (!($validator instanceof \Closure || $validator instanceof Stars\Core\Validator\Validator)) {
-                        throw new \Exception("Your validator should be a closure or a implementation of Stars\/Core\/Validator\/Validator");
+                    $implementation = class_implements($validator);
+                    if (!($validator instanceof \Closure || in_array("Stars\\Core\\Validator\\Validator",$implementation))) {
+                        throw new \Exception("Your validator should be a closure or a implementation of Stars/Core/Validator/Validator");
                     }
                 }
             }
