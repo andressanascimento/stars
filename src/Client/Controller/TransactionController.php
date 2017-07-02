@@ -13,7 +13,6 @@ class TransactionController extends Controller
     {
         $repo = $this->db->getRepository('Stars\\Client\\Model\\TransactionModel');
         $list = $repo->fetchAll();
-
         return $this->view->render('transaction/index.html.twig', array('transactions' => $list));
     }
 

@@ -11,7 +11,9 @@
             <th>Cliente</th>
             <th class="col-md-2">Loja</th>
             <th class="col-md-2">Funcionário</th>
+            <th class="col-md-1">Avaliação</th>
             <th class="col-md-1">Editar</th>
+            <th class="col-md-1">Avaliar</th>
         </tr>
     </thead>
     <tbody>
@@ -21,8 +23,20 @@
             <td>{{transaction.client}}</td>
             <td>{{transaction.store}}</td>
             <td>{{transaction.employee}}</td>
+            <td>{{transaction.rate}}</td>
             <td><button class="btn btn-primary btn-modal" modal-title="Atualizar Transação"
                         modal-url="/client/transaction/update/{{transaction.id}}">Editar</button></td>
+            {% if transaction.rate is null %}
+                <td>
+                    <button class="btn btn-primary btn-modal" modal-title="Avaliar"
+                        modal-url="/client/rate/new/{{transaction.id}}">Avaliar</button>
+                </td>
+            {% else %}
+                <td>
+                    <button class="btn btn-primary btn-modal" modal-title="Editar Avaliação"
+                        modal-url="/client/rate/update/{{transaction.rateId}}">Editar Avaliação</button>
+                </td>
+            {% endif %}
         </tr>
     {% endfor %}
     </tbody>

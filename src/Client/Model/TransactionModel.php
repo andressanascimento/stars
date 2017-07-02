@@ -28,6 +28,8 @@ class TransactionModel extends Model
 
     private $employee_id;
 
+    private $rate_id;
+
     public function getId() {
         return $this->id;
     }
@@ -45,5 +47,10 @@ class TransactionModel extends Model
     public function getEmployeeId()
     {
         return $this->store_id;
+    }
+
+    public function getRateId()
+    {
+        return $this->rate_id;
     }
 }

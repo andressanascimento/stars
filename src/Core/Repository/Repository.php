@@ -61,7 +61,7 @@ class Repository
         foreach ($parameters as $param => &$value) {
             $statement->bindParam($param, $value);
         }
-        $statement->setFetchMode(\PDO::FETCH_CLASS, $this->modelName); 
+        $statement->setFetchMode(\PDO::FETCH_CLASS, $this->modelName);
         $statement->execute();
         
         return $statement->fetch();
