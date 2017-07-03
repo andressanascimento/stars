@@ -49,7 +49,12 @@ class BootstrapService
         return $response;
     }
 
-    private function getControllerName($route)
+    /**
+     * Create a controller name and check if class exists
+     * @param array $route List of definition routes routes.yml
+     * @return string Controller class name
+     */
+    private function getControllerName(array $route)
     {
         $module = $route['module'];
         $controller = $this->dashesToCamelCase($route['controller']);

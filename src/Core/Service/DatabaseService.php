@@ -12,7 +12,7 @@ class DatabaseService
     private $currentConnection;
 
     /**
-     * @param array config
+     * @param array $config Content of config file database
      */
     protected function __construct(array $config)
     {
@@ -24,7 +24,13 @@ class DatabaseService
         
     }
 
-    protected function validateConfig($config, $connection_name)
+    /**
+     * Validate if a config database connection is in an valid format
+     * @param array $config Content of config file database
+     * @param string $connection_name Name of the connection
+     * @return boolean
+     */
+    protected function validateConfig(array $config, $connection_name)
     {
         $config_options = $config[$connection_name];
         $validate_keys = array('dsn','username','password');
@@ -37,7 +43,14 @@ class DatabaseService
         return true;
     }
 
-    protected function createConnection($config, $connection_name)
+    /**
+     * An config file could be filled with more than on connection
+     * This method fetch one connection defined by $connection_name
+     * @param array $config Config file
+     * @param string $connection_name
+     * @return \PDO
+     */
+    protected function createConnection(array $config, $connection_name)
     {
         return new \PDO($config[$connection_name]['dsn'], 
             $config[$connection_name]['username'], 
@@ -50,6 +63,11 @@ class DatabaseService
         return new static($config);
     }
 
+    /**
+     * Return a connection, create a new if connection not exists
+     * @param $connection_name
+     * @return DatabaseService
+     */
     public function setConnection($connection_name = 'default')
     {
 
@@ -64,11 +82,20 @@ class DatabaseService
         return $this;
     }
 
+    /**
+     * Return the current connection
+     * @return \PDO
+     */
     public function getConnection()
     {
         return $this->connections[$this->currentConnection];
     }
 
+    /**
+     * Return a repository from a model
+     * @param string $model_name
+     * @return object
+     */
     public function getRepository($model_name)
     {
         $model = new $model_name();

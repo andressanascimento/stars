@@ -42,26 +42,49 @@ class RequestService
         return new static($_GET, $_POST, $_COOKIE, $_FILES, $server, $routes);
     }
 
+    /**
+     * Return all parameters from $_GET
+     * @return array
+     */
     public function get()
     {
         return $this->get;
     }
 
+    /**
+     * Return all parameters from $_POST
+     * @return array
+     */
     public function post()
     {
         return $this->post;
     }
 
+    /**
+     * Return all parameters from $_COOKIE
+     * @return array
+     */
     public function cookie()
     {
         return $this->cookie;
     }
 
+    /**
+     * Return all parameters from $_SERVER
+     * @return array
+     */
     public function server()
     {
         return $this->server;
     }
 
+    /**
+     * Return a single param from defined type
+     * Ex: age, post => $_POST['age']
+     * @param string $param_name
+     * @param string $type
+     * @return mixed
+     */
     public function param($param_name, $type)
     {
         $list = $this->$type;
@@ -71,6 +94,11 @@ class RequestService
         return null;
     }
 
+    /**
+     * Match the url to a route
+     * @param $route_url
+     * @return array Return a matched route
+     */
     public function getRoute($route_url)
     {
         foreach ($this->routes as $route) {
@@ -103,6 +131,10 @@ class RequestService
         return false;
     }
 
+    /**
+     * Check if a request is post
+     * @return boolean
+     */
     public function isPost()
     {
         $request = $this->server();

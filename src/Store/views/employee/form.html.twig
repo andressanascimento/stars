@@ -17,7 +17,7 @@
         <select name="store_id" class="form-control">
             <option value="">Selecione</option>
             {% for store in stores %}
-                <option value="{{store.id}}" {% if model.storeId == store.id %}selected{% endif %}>{{store.name}}</option>
+                <option value="{{store.id}}" {% if model.store_id == store.id or model.storeId == store.id %}selected{% endif %}>{{store.name}}</option>
             {% endfor %}
         </select>
         {% if input_errors['store_id'] is not null %}

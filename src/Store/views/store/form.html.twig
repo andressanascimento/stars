@@ -27,7 +27,7 @@
         <select name="state_id" class="form-control">
             <option value="">Selecione</option>
             {% for state in states %}
-                <option value="{{state.id}}" {% if model.stateId == state.id %}selected{% endif %}>{{state.name}}</option>
+                <option value="{{state.id}}" {% if model.state_id == state.id or model.stateId == state.id %}selected{% endif %}>{{state.name}}</option>
             {% endfor %}
         </select>
         {% if input_errors['state_id'] is not null %}

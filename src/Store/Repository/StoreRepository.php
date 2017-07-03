@@ -6,6 +6,10 @@ use Stars\Core\Repository\Repository;
 
 class StoreRepository extends Repository
 {
+    /**
+     * Return all stores
+     * @return array of objects Stars\Store\Model\StoreModel
+     */
     public function fetchAll()
     {
         $statement = $this->connection->prepare("select s.*,st.name as state from store s join state st on st.id = s.state_id");
@@ -13,6 +17,10 @@ class StoreRepository extends Repository
         return $statement->fetchAll(\PDO::FETCH_CLASS, $this->modelName);
     }
 
+    /**
+     * Return all stores with a match name
+     * @return array of objects Stars\Store\Model\StoreModel
+     */
     public function searchByName($name)
     {
         $statement = $this->connection->prepare("select s.*,st.name as state from store s join state st on st.id = s.state_id where s.name like :name");
@@ -22,25 +30,38 @@ class StoreRepository extends Repository
         return $statement->fetchAll(\PDO::FETCH_CLASS, $this->modelName);
     }
 
+    /**
+     * Delete a list of ids
+     * @param array $list (id list to delete)
+     * @return string|null string if failure (string message) or null for success
+     * 
+     */
     public function deleteList(array $list)
     {
         $message  = null;
         $ids = $this->checkIfClientsHasTransactions($list, $message);
+            if (!empty($ids)) {
+            $place = str_repeat ('?, ',  count ($ids) - 1) . '?';
+            $statement = $this->connection->prepare("delete from store where id in ({$place})");
 
-        $place = str_repeat ('?, ',  count ($ids) - 1) . '?';
-        $statement = $this->connection->prepare("delete from store where id in ({$place})");
-
-        $i = 1;
-        foreach ($ids as &$value) {
-            $statement->bindParam($i, $value);
-            $i++;
+            $i = 1;
+            foreach ($ids as &$value) {
+                $statement->bindParam($i, $value);
+                $i++;
+            }
+            
+            $statement->execute();
         }
-        
-        $statement->execute();
-
         return $message;
     }
 
+    /**
+     * Check dependency with transaction before delete
+     * @param array $ids list of ids to check
+     * @param string $message receive error messages
+     * @return array list of stores without dependency
+     * 
+     */
     public function checkIfClientsHasTransactions($ids, &$message)
     {
         $place = str_repeat ('?, ',  count ($ids) - 1) . '?';
@@ -89,8 +110,6 @@ class StoreRepository extends Repository
                 
             );
         }
-        //echo "<pre>";
-        //var_dump($report); die();
         return $report;
     }
 }

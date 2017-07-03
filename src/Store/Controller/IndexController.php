@@ -10,7 +10,6 @@ class IndexController extends Controller
     {
         $repo = $this->db->getRepository('Stars\\Store\\Model\\StoreModel');
         $list = $repo->storeReport();
-        var_dump($list[2]['data']);
         return $this->view->render('index/index.html.twig', array('list' => $list));
     }
 }

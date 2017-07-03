@@ -1,7 +1,8 @@
 {% extends 'layout.html.twig' %}
 {% block content %}
-    <h1 class="page-header text-center" style="margin-top: -30px">Relatório de Avaliação por Loja</h1>
+    <h1 class="page-header text-center" style="margin-top: -10px">Relatório de Avaliação por Loja</h1>
     <br/>
+    {% if list is null %}<p class="text-center">Nenhuma loja ainda? Que triste.. Que tal criar uma? <a href="/store/store/index">Loja</a></p>{% endif %}
     {% for id, store in list %}
         <div id="container{{id}}" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px;"></div>
         <script type="text/javascript">

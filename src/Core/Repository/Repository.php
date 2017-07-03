@@ -19,6 +19,10 @@ class Repository
         $this->tableName = $tableName;
     }
 
+    /**
+     * Get all records from a defined in $tableName
+     * @return array of object of $modelName
+     */
     public function fetchAll()
     {
         $table = $this->tableName;
@@ -27,6 +31,11 @@ class Repository
         return $statement->fetchAll(\PDO::FETCH_CLASS, $this->modelName);
     }
 
+    /**
+     * Get all records that match with parameters
+     * @param array $parameters Key (field name) => Value (search value)
+     * @return array of object of $modelName
+     */
     public function findBy(array $parameters)
     {
         $table = $this->tableName;
@@ -47,6 +56,11 @@ class Repository
         return $statement->fetchAll(\PDO::FETCH_CLASS, $this->modelName);
     }
 
+    /**
+     * Fetch a single row that match with parameters
+     * @param array $parameters Key (field name) => Value (search value)
+     * @return array of object of $modelName
+     */
     public function findByOne(array $parameters)
     {
         $table = $this->tableName;
@@ -67,6 +81,11 @@ class Repository
         return $statement->fetch();
     }
 
+    /**
+     * Get all rows that match name
+     * @param string $name
+     * @return array objects
+     */
     public function searchByName($name)
     {
         $table = $this->getTableName();
@@ -77,6 +96,11 @@ class Repository
         return $statement->fetchAll(\PDO::FETCH_CLASS, $this->modelName);
     }
 
+    /**
+     * Insert a record on defined $tableName
+     * @param array $parameters
+     * @return int Last Insert Id
+     */
     public function insert(array $parameters)
     {
         $table = $this->tableName;
@@ -98,6 +122,12 @@ class Repository
         return $this->connection->lastInsertId();;
     }
 
+    /**
+     * Update a record
+     * @param $parameters Values to update
+     * @param $where Where clause parameters
+     * @return boolean
+     */
     public function update(array $parameters, array $where = null)
     {
         $table = $this->tableName;
@@ -130,6 +160,11 @@ class Repository
         return true;
     }
 
+    /**
+     * Delete a record
+     * @param $where
+     * @return boolean
+     */
     public function delete(array $where = null)
     {
         $table = $this->tableName;
@@ -162,6 +197,11 @@ class Repository
         return true;
     }
 
+    /**
+     * Delete a list of objects
+     * @param array $ids Array list of ids
+     * @return boolean
+     */
     public function deleteList(array $ids)
     {
         $table = $this->tableName;

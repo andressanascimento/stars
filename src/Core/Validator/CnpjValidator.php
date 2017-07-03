@@ -8,6 +8,11 @@ class CnpjValidator implements Validator
 {
     private $message;
 
+    /**
+     * Check if is a valid CNPJ
+     * @param string $value Value from post
+     * @return boolean
+     */
     public function isValid($value)
     {
         $cnpj = preg_replace('/[^0-9]/', '', (string) $value);
@@ -60,6 +65,10 @@ class CnpjValidator implements Validator
         return true;
     }
 
+    /**
+     * Return error message
+     * @return string
+     */
     public function getMessage()
     {
         return $this->message;

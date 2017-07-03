@@ -8,6 +8,11 @@ class FormValidator
 
     protected $messages;
 
+    /**
+     * Validate post
+     * @param array $form_values Values from post
+     * @return boolean
+     */
     public function isValid(array $form_values)
     {
         $this->messages = null;
@@ -46,6 +51,11 @@ class FormValidator
         return $invalid;
     }
 
+    /**
+     * Check if all fields marked with required are filled
+     * @param array $form_values Values from post
+     * @return boolean
+     */
     protected function checkRequired(array $form_values)
     {
         $invalid = true;
@@ -60,6 +70,10 @@ class FormValidator
         return $invalid;
     }
 
+    /**
+     * Check if the atribute rules are filled in a valid format
+     * @return boolean
+     */
     protected function validateRules()
     {
         $rules = $this->rules;
