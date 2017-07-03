@@ -13,3 +13,10 @@ default_id:
   action: $3
   params: 
     id: $4
+
+index:
+  type: named
+  url: /^\/$/
+  module: store
+  controller: index
+  action: index

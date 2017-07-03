@@ -1,0 +1,45 @@
+{% extends 'layout.html.twig' %}
+{% block content %}
+    <h1 class="page-header text-center" style="margin-top: -30px">Relatório de Avaliação por Loja</h1>
+    <br/>
+    {% for id, store in list %}
+        <div id="container{{id}}" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px;"></div>
+        <script type="text/javascript">
+
+        //$(document).ready(function () {
+
+            // Build the chart
+            Highcharts.chart('container{{id}}', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: "{{store['name']}}"
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    name: 'Avaliação',
+                    colorByPoint: true,
+                    data: {{ store['data']|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
+                    //data: [{name: 'Nota 1', y: 5}, {name: 'Nota 2', y: 1}, {name: 'Nota 3', y: 1}, {name: 'Nota 4', y: 1}, {name: 'Nota 5', y: 1}]
+                }]
+            });
+        //});
+        </script>
+    {% endfor %}
+{% endblock %}

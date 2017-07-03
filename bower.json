@@ -1,0 +1,22 @@
+{
+  "name": "stars",
+  "homepage": "https://github.com/andressanascimento/stars",
+  "authors": [
+    "Andressa <desa.lopes7@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "chart.js": "^2.6.0"
+  }
+}

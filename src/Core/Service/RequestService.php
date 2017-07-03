@@ -75,18 +75,26 @@ class RequestService
     {
         foreach ($this->routes as $route) {
             if (preg_match($route['url'], $route_url, $matches)) {
-                $final_route = array(
-                    'module' => $matches[substr($route['module'],1,1)],
-                    'controller' => $matches[substr($route['controller'],1,1)],
-                    'action' => $matches[substr($route['action'],1,1)],
-                );
+                if ($route['type'] == 'segment') {
+                    $final_route = array(
+                        'module' => $matches[substr($route['module'],1,1)],
+                        'controller' => $matches[substr($route['controller'],1,1)],
+                        'action' => $matches[substr($route['action'],1,1)],
+                    );
 
-                if (array_key_exists('params', $route)) {
-                    foreach ($route['params'] as $param => $value) {
-                        $this->get[$param] = $matches[substr($value,1,1)];
+                    if (array_key_exists('params', $route)) {
+                        foreach ($route['params'] as $param => $value) {
+                            $this->get[$param] = $matches[substr($value,1,1)];
+                        }
                     }
+                } else {
+                    $final_route = array(
+                        'module' => $route['module'],
+                        'controller' => $route['controller'],
+                        'action' => $route['action'],
+                    );
                 }
-                
+
                 return $final_route;
             }
 
